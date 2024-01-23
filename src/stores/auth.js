@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', {
             if (userExists) {
                 throw new Error('User already exists');
             } else {
-                let newUser = { id: Date.now(), name, email, password, favorites: [] };
+                let newUser = { id: Date.now(), name, email, password };
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
                 localStorage.setItem('currentUserEmail', email);

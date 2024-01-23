@@ -7,6 +7,7 @@
       <div class="container">
         <p class="text-h4 text-left ml-4">Vyhľadaj svoju obľúbenú knihu</p>
         <TheSearch />
+        <p class="text-h4 text-left ma-4">Populárne knihy</p>
         <TheCarousel />
         <h1 class="nadpis">Kategorie</h1>
         <div class="categories">

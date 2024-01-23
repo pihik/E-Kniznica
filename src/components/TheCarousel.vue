@@ -1,13 +1,18 @@
 <template>
-    <v-carousel
-      height="400"
-      hide-delimiter-background
-      show-arrows="hover"
-      style="border-radius: 10px; overflow: hidden;"
+  <v-carousel
+    height="400"
+    hide-delimiter-background
+    show-arrows="hover"
+    style="border-radius: 10px; overflow: hidden;"
+  >
+    <v-carousel-item
+      v-for="(book, i) in randomBooks"
+      :key="i"
     >
-      <v-carousel-item
-        v-for="(book, i) in randomBooks"
-        :key="i"
+      <router-link
+        :to="isLoggedIn ? { name: 'experience', params: { slug: book.slug } } : '/Login'"
+        class="bookCard"
+        @click="handleBookCardClick"
       >
         <v-sheet
           :style="{ 'background-image': `linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 50, 0.75)), url(/images/${book.categoryImage})` }"
@@ -22,55 +27,67 @@
             <div class="text-right">{{ book.author }}</div>
           </div>
         </v-sheet>
-      </v-carousel-item>
-    </v-carousel>
+      </router-link>
+    </v-carousel-item>
+  </v-carousel>
 </template>
 
 <script>
 import data from "../data.json";
 
 export default {
-data() {
+  data() {
     return {
-    books: [],
-    randomBooks: []
+      books: [],
+      randomBooks: []
     };
-},
-created() {
+  },
+  created() {
     this.loadData();
-},
-methods: {
+  },
+  methods: {
     loadData() {
-    this.books = data.categories.flatMap(category => category.experiences);
-    this.getRandomBooks();
+      this.books = data.categories.flatMap(category => category.experiences);
+      this.getRandomBooks();
     },
     getRandomBooks() {
-    const shuffledBooks = this.shuffleArray([...this.books]);
-    this.randomBooks = shuffledBooks.slice(0, 5);
+      const shuffledBooks = this.shuffleArray([...this.books]);
+      this.randomBooks = shuffledBooks.slice(0, 5);
     },
     shuffleArray(array) {
-    let currentIndex = array.length, randomIndex;
+      let currentIndex = array.length,
+        randomIndex;
 
-    while (currentIndex !== 0) {
+      while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
 
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
+      }
 
-    return array;
-    }
-}
+      return array;
+    },
+
+    handleBookCardClick() {
+      if (!this.isLoggedIn) {
+        alert("Pre zobrazenie knihy sa prihlás");
+      }
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return localStorage.getItem("isLoggedIn") === "true";
+    },
+  },
 };
 </script>
 
 <style scoped>
 .image-container {
-width: 180px;
-height: 250px;
-object-fit: cover;
-border-radius: 1vh;
-margin: 2vh;
+  width: 180px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 1vh;
+  margin: 2vh;
 }
 </style>
-  
